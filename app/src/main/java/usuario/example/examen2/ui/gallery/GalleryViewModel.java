@@ -15,13 +15,8 @@ public class GalleryViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
     }
-    public void CargarListaConDetalle(FragmentGalleryBinding binding, Nota nota)
-    {
-        binding.tvNombreAlumno.setText(nota.getNombre());
-        binding.tvDescripcion.setText(nota.getDescripcion());
-        binding.tvNota.setText(nota.getNota());
 
-    }
+
 
     public LiveData<String> getText() {
         return mText;
