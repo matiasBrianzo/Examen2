@@ -8,24 +8,44 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Date;
+
+import usuario.example.examen2.R;
 import usuario.example.examen2.databinding.FragmentHomeBinding;
+import usuario.example.examen2.ui.modelo.Nota;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
+    private HomeViewModel vm;
+  private View root;
+    private RecyclerView rvLista;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
+        vm = new ViewModelProvider(this).get(HomeViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        rvLista = root.findViewById(R.id.rvLista);
+
+        GridLayoutManager grilla = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        rvLista.setLayoutManager(grilla);
+        vm.getLista().observe(getViewLifecycleOwner(), new Observer<ArrayList<Nota>>() {
+            @Override
+            public void onChanged(ArrayList<Nota> notas) {
+                ListaNotasAdapter adapter = new ListaNotasAdapter(getContext(), notas, getLayoutInflater());
+                rvLista.setAdapter(adapter);
+            }
+        });
+        vm.crearListadoNota();
+
         return root;
     }
 

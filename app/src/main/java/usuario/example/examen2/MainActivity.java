@@ -1,12 +1,14 @@
 package usuario.example.examen2;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import usuario.example.examen2.databinding.ActivityMainBinding;
+import usuario.example.examen2.ui.Dialogo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +50,22 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.nav_home:
+                        navController.navigate(R.id.nav_home);
+                        drawer.closeDrawers();
+                        return true;
+                    case R.id.nav_slideshow:
+                        Dialogo.mostratDialogo(MainActivity.this);
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     @Override

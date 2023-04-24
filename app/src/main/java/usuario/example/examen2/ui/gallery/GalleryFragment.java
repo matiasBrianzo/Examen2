@@ -11,21 +11,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import usuario.example.examen2.databinding.FragmentGalleryBinding;
+import usuario.example.examen2.ui.modelo.Nota;
 
 public class GalleryFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
 
+    private Nota nota;
+    private GalleryViewModel vm ;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        vm =new ViewModelProvider(this).get(GalleryViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        if (getArguments() != null) {
+            nota = (Nota) getArguments().getSerializable("actividad");
+            vm.CargarListaConDetalle(binding,nota);
+        }
         return root;
     }
 
